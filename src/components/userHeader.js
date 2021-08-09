@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchUser } from '../actions';
 
 class UserHeader extends React.Component {
   // we are fetching repetative data from database. For every user, data requested as much as their blogpost number. -> 2 possible ways to solve this in actions folder index.js
@@ -24,9 +23,7 @@ class UserHeader extends React.Component {
   - iterate over unique user ids,
   - call 'fetchUser' with each userId
   */
-  componentDidMount() {
-    this.props.fetchUser(this.props.userId);
-  }
+
 
   render() {
     const { user } = this.props;
@@ -44,6 +41,4 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 export default connect(
-  mapStateToProps,
-  { fetchUser }
-)(UserHeader);
+  mapStateToProps)(UserHeader);

@@ -3,8 +3,13 @@ import _ from 'lodash';
 
 // we are going to call fetch users and posts mutliple times. For fetching, this action creator is going to be called ALONE. The other action creators will help to form this one. 
 // when we call of an action creator inside of an action creator we need to dispatch the results.
-export const fetchPostsAndUsers = () => async dispatch => {
+export const fetchPostsAndUsers = () => async (dispatch, getState) => {
    await dispatch(fetchPosts()); // making sure api request is completed
+   const userIds = _.uniq( _.map(getState().posts, 'userId')); // returning unique user ids
+//    for ( var i = 1; i <= userIds; i++) {
+//         dispatch(fetchUser(i))
+//    }
+    userIds.forEach(id => dispatch(fetchUser(id)));
 };
 
 export const fetchPosts = () => 
