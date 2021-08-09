@@ -1,5 +1,11 @@
 import jsonPlaceholder from '../apis/jsonPlaceholder';
+import _ from 'lodash';
 
+// we are going to call fetch users and posts mutliple times. For fetching, this action creator is going to be called ALONE. The other action creators will help to form this one. 
+// when we call of an action creator inside of an action creator we need to dispatch the results.
+export const fetchPostsAndUsers = () => async dispatch => {
+   await dispatch(fetchPosts()); // making sure api request is completed
+};
 
 export const fetchPosts = () => 
 /* this approach is wrong Actions must be plain JS objects. Instead, the actual type was: BECASUSE WE HAVE ASYNC AND AWAIT SYNTAX 'Promise'. You may need to add middleware to your store setup to handle dispatching other values, such as 'redux-thunk' to handle dispatching functions.
@@ -35,9 +41,20 @@ const response = await jsonPlaceholder.get('/posts');
         dispatch({type: 'FETCH_POSTS', payload: response.data})
     };
 
-export const fetchUser = (id) => async dispatch => {
+// meaning tis is a private function, this allows one time fetching of the data for user id
+// export const fetchUser = (id) => dispatch => {
+//     _fetchUser(id, dispatch);
+// };
+// const _fetchUser = _.memoize(async(id, dispatch) => {
+//     const response = await jsonPlaceholder.get(`/users/${id}` );;
+
+//     dispatch({type: 'FETCH_USER', payload: response.data})
+// });
+
+// in order to refetch different sources overtime, another solution
+export const fetchUser = (id) => async dispatch =>
+{    
     const response = await jsonPlaceholder.get(`/users/${id}` );;
 
     dispatch({type: 'FETCH_USER', payload: response.data})
-
-} ;
+};
